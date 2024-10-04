@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border outline-none;
+  }
+  body {
+    @apply text-base text-neutral-950 bg-neutral-50 !overflow-x-hidden;
+  }
+  .main-btn {
+    @apply p-2.5 px-4 rounded-full text-sm bg-sky-500 text-white uppercase transition-all ease-in-out hover:bg-sky-400;
+  }
+  .alt-btn {
+    @apply p-2.5 px-4 rounded-full text-sm border border-neutral-300 uppercase transition-all ease-in-out hover:bg-neutral-100;
+  }
+  .link-hover {
+    @apply relative transition-all ease-in-out hover:text-sky-500 before:absolute before:w-full before:h-[1px] before:rounded-full before:origin-right before:scale-x-0 before:bg-sky-500 before:left-0 before:bottom-0 before:transition-transform before:ease-in-out before:duration-300 hover:before:scale-x-100 hover:before:origin-left;
+  }
+  .link-active {
+    @apply text-sky-500 before:bg-sky-500 before:scale-x-100;
+  }
+  .overlay {
+    @apply before:absolute before:w-full before:h-full before:bg-black/75 before:top-0 before:left-0;
+  }
+  .balls {
+    @apply before:absolute before:w-12 before:h-12 before:rounded-full before:bg-neutral-50 before:z-20 before:left-[62%] before:-translate-x-1/2 before:-top-7 before:max-lg:top-[51.7%] before:max-lg:left-0 after:absolute after:w-12 after:h-12 after:rounded-full after:bg-neutral-50 after:z-20 after:left-[62%] after:-translate-x-1/2 after:-bottom-7 after:max-lg:top-[51.7%] after:max-lg:left-[100%];
+  }
+  .heading {
+    @apply uppercase font-bold text-5xl text-center mb-10;
+  }
+  .badge {
+    @apply absolute top-3 left-3 p-1 px-3 rounded-full text-xs uppercase text-white shadow-lg;
+  }
+  input {
+    @apply p-2 px-4 rounded-lg border w-full;
+  }
+}
+
+.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
+  background-color: #0ea5e9;
+}
+
+// Spinner 
+/* From Uiverse.io by barisdogansutcu */
+svg.spinner {
+  width: 3.25em;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+  circle {
+    fill: none;
+    stroke: #38bdf8 ;
+    stroke-width: 5;
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: dash4 1.5s ease-in-out infinite;
+  }
+  @keyframes rotate4 {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes dash4 {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+  
+    50% {
+      stroke-dasharray: 90, 200;
+      stroke-dashoffset: -35px;
+    }
+  
+    100% {
+      stroke-dashoffset: -125px;
+    }
+  }
+}
+
+

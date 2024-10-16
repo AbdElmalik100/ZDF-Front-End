@@ -4,7 +4,7 @@ import ZDFLogo from '../assets/images/ZDF - Z Dental Forum Black.png'
 import { useGoogleLogin } from '@react-oauth/google';
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-// import { GlobeDemo } from '../components/Global'
+import { GlobeDemo } from '../components/Global'
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { googleAuth } from "../store/slices/usersSlice";
@@ -56,7 +56,7 @@ function Login() {
                         <h1 className="lg:text-6xl max-lg:text-center text-2xl bg-gradient-to-b from-white to-white/85 bg-clip-text text-transparent font-bold lg:w-3/4 w-full">Join us to see our professional speakers in the new era of dentistry.</h1>
                     </motion.div>
                 </div>
-                {/* <GlobeDemo></GlobeDemo> */}
+                <GlobeDemo></GlobeDemo>
             </div>
         </main >
     )

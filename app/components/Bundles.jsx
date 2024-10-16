@@ -10,7 +10,7 @@ function Bundles() {
     const { bundles } = useSelector(state => state.bundles)
 
     return (
-        bundles &&
+        bundles.length > 0 &&
         <section className='bundles py-32 relative'>
             <div className="container px-4">
                 <motion.div

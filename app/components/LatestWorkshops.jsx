@@ -10,7 +10,7 @@ function LatestWorkshops() {
     const { workshops } = useSelector(state => state.workshops)
 
     return (
-        workshops &&
+        workshops.length > 0 &&
         <section className="latest-workshops w-full bg-neutral-50 bg-grid-black/[0.2] relative">
             <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-neutral-50 [mask-image:radial-gradient(ellipse_at_center,transparent_5%,black)]"></div>
             <div className=" py-32 relative z-50">

@@ -2,59 +2,59 @@ import Image from 'next/image';
 
 export const sliderObject = [
     {
-        image: '95.png',
+        image: '95.webp',
         text: "Z Dental Forum 2024, Advancing Dentistry at Zagazig University's Faculty of Dentistry"
     },
     {
-        image: '1.png',
+        image: '1.webp',
         text: "Boost Your Practice with Digital Marketing Advice from Experts"
     },
     {
-        image: '97.png',
+        image: '97.webp',
         text: "Capture Precision: Dental Photography Tips from the Pros"
     },
     {
-        image: '102.png',
+        image: '102.webp',
         text: "Revolutionizing Imaging: Learn Mobile Dental Photography from the Best"
     },
     {
-        image: '103.png',
+        image: '103.webp',
         text: "Master Advanced and Rare Dental Cases with Expert Insights"
     },
     {
-        image: '105.png',
+        image: '105.webp',
         text: "Overcome Rare Dental Challenges with Guidance from Specialists"
     },
     {
-        image: '106.png',
+        image: '106.webp',
         text: "Innovative Dental Photography Techniques from Seasoned Professionals"
     },
     {
-        image: '119.png',
+        image: '119.webp',
         text: "Embrace Digital Dentistry, Insights from Visionary Leaders"
     },
     {
-        image: '120.png',
+        image: '120.webp',
         text: "Build Stronger Patient Connections, Communication Strategies from Experts"
     },
     {
-        image: '127.png',
+        image: '127.webp',
         text: "Achieve Excellence in Patient Management with Industry Leaders"
     },
     {
-        image: '130.png',
+        image: '130.webp',
         text: "Lead the Future of Dentistry: Visionary Ideas from Expert Speakers"
     },
     {
-        image: '133.png',
+        image: '133.webp',
         text: "Future-Ready Dentistry, Embrace Digital Innovation"
     },
     {
-        image: '134.png',
+        image: '134.webp',
         text: "Mastering Complex Operative Cases, Expert Approaches to Success"
     },
     {
-        image: '139.png',
+        image: '139.webp',
         text: "Innovative Techniques in Fiber-Reinforced Composite Dentistry"
     },
 ]

@@ -51,7 +51,7 @@ function LatestEvent() {
                         <div className="event-box relative overflow-hidden rounded-3xl balls h-full">
                             <span className="separator absolute h-full border-dashed border border-neutral-50 left-[62%] -translate-x-1/2 top-0 z-20 max-lg:rotate-90 max-lg:top-10"></span>
                             <div className="overlay">
-                                <img className='w-full h-full absolute left-0 top-0 -z-10 object-cover pointer-events-none' src="/images/Z Dental Forum.png" alt="" />
+                                <img className='w-full h-full absolute left-0 top-0 -z-10 object-cover pointer-events-none' src={event.image} alt="Event image" />
                                 <div className="flex items-stretch gap-32 w-full h-full xl:p-20 md:p-14 p-8 lg:flex-row flex-col">
                                     <div className="left z-10 text-white lg:w-2/3 w-full">
                                         <h2 className="xl:text-5xl text-3xl font-bold capitalize">{event.title}</h2>

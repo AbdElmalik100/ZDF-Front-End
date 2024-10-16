@@ -12,9 +12,9 @@ import Testimonials from './components/Testimonials'
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* <section className="landing h-screen pt-[62px]">
+      <section className="landing h-screen pt-[62px]">
         <Slider></Slider>
-      </section> */}
+      </section>
       <Sponsorship></Sponsorship>
       <LatestEvent></LatestEvent>
       <EventTimeline></EventTimeline>

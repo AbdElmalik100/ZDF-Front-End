@@ -6,7 +6,7 @@ export function cn(...inputs) {
 }
 
 
-export const formatCurrenct = new Intl.NumberFormat("en-US", {
+export const formatCurrency = new Intl.NumberFormat("en-US", {
     currency: "EGP",
     style: "currency"
 })

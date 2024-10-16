@@ -11,7 +11,6 @@ export const getSubscriptions = createAsyncThunk("subscriptionsSlice/getSubscrip
     }
 })
 
-
 const subscriptionsSlice = createSlice({
     name: "subscriptions",
     initialState: {

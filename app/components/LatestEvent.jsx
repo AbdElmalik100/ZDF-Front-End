@@ -1,55 +1,33 @@
-import GooglePayButton from "@google-pay/button-react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { motion } from 'framer-motion'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckoutMenu from './CheckoutMenu'
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
+import ID from "./ID";
 import moment from "moment";
-import { formatCurrenct } from "../lib/utils";
+import { formatCurrency } from "../lib/utils";
 
 function LatestEvent() {
     const [checkout, setCheckout] = useState(false)
     const { isLoggedIn } = useSelector(state => state.users)
     const { event, loading } = useSelector(state => state.events)
+    const { subscriptions } = useSelector(state => state.subscriptions)
+    const [showID, setShowID] = useState(false)
+    const [eventID, setEventID] = useState(null)
     const router = useRouter()
-    const paymentData = {
-        apiVersion: 2,
-        apiVersionMinor: 0,
-        allowedPaymentMethods: [
-            {
-                type: 'CARD',
-                parameters: {
-                    allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-                    allowedCardNetworks: ['MASTERCARD', 'VISA'],
-                },
-                tokenizationSpecification: {
-                    type: 'PAYMENT_GATEWAY',
-                    parameters: {
-                        gateway: 'example',
-                        gatewayMerchantId: 'exampleGatewayMerchantId',
-                    },
-                },
-            },
-        ],
-        merchantInfo: {
-            merchantId: '12345678901234567890',
-            merchantName: 'Demo Merchant',
-        },
-        transactionInfo: {
-            totalPriceStatus: 'FINAL',
-            totalPriceLabel: 'Total',
-            totalPrice: '100.00',
-            currencyCode: 'EGP',
-            countryCode: 'EG',
-        },
-    }
 
     const booking = () => {
         isLoggedIn ? setCheckout(true) : router.push("/login")
     }
 
+    useEffect(() => {
+        if (isLoggedIn) {
+            const checker = subscriptions.filter(sub => sub.event?._id === event._id)[0]
+            checker ? setEventID(checker) : setEventID(null)
+        } else setEventID(null)
+    }, [subscriptions, event, isLoggedIn])
 
     return (
         loading || !event
@@ -63,7 +41,7 @@ function LatestEvent() {
                         whileInView={{ y: 0, opacity: 1 }}
                         transition={{ ease: "easeOut", delay: 0.5 }}
                     >
-                        <h3 className="heading max-md:text-3xl">upcoming event</h3>
+                        <h3 className="heading heading md:w-2/3 w-full mx-auto max-md:text-3xl">upcoming event</h3>
                     </motion.div>
                     <motion.div
                         initial={{ y: 25, opacity: 0 }}
@@ -82,7 +60,7 @@ function LatestEvent() {
                                         </p>
                                         <ul className="flex flex-col gap-5 mt-10 text-xl">
                                             {
-                                                event.sessions.map((session, index) => 
+                                                event.sessions.map((session, index) =>
                                                     <li key={index} className="flex items-center gap-2">
                                                         <Icon icon="material-symbols:check-rounded" fontSize={24} />
                                                         <span>{session}</span>
@@ -109,33 +87,37 @@ function LatestEvent() {
                                             </li>
                                             <li className="flex items-center gap-2">
                                                 <Icon icon="mingcute:currency-pound-fill" fontSize={24} />
-                                                <span>{formatCurrenct.format(event.ticket_price)}</span>
+                                                <span>{formatCurrency.format(event.ticket_price)}</span>
                                             </li>
                                         </ul>
-                                        <p className="lg:mt-auto text-center mt-8">Book your ticket now before it goes out limited seats, don't miss the chance to meet our experts in Z Dental Forum event, We look forward seeing you there.</p>
-                                        {/* <GooglePayButton
-                                        className="w-full mt-5"
-                                        buttonSizeMode="fill"
-                                        buttonType="book"
-                                        buttonRadius={50}
-                                        environment="TEST"
-                                        paymentRequest={paymentData}
-                                        onLoadPaymentData={paymentRequest => {
-                                            console.log('load payment data', paymentRequest);
-                                        }}
-                                    /> */}
-                                        <button className="main-btn mt-4 w-full flex items-center gap-2 font-bold justify-center"
-                                            onClick={booking}>
-                                            <span>Book your ticket now</span>
-                                            <Icon icon='ion:ticket' fontSize={20}></Icon>
-                                        </button>
+                                        <p className="lg:mt-auto text-center mt-8">Book your ticket now before it goes out limited seats, don&apos;t miss the chance to meet our experts in Z Dental Forum event, We look forward seeing you there.</p>
+                                        {
+                                            eventID
+                                                ?
+                                                <button onClick={() => setShowID(true)} className="main-btn mt-4 w-full flex items-center bg-green-600 opacity-95 hover:bg-green-500 gap-2 font-bold justify-center">
+                                                    <span>Your book details</span>
+                                                </button>
+                                                :
+                                                event.is_available
+                                                    ?
+                                                    <button className="main-btn mt-4 w-full flex items-center gap-2 font-bold justify-center"
+                                                        onClick={booking}>
+                                                        <span>Book your ticket now</span>
+                                                        <Icon icon='ion:ticket' fontSize={20}></Icon>
+                                                    </button>
+                                                    :
+                                                    <div className="main-btn mt-4 w-full flex items-center bg-red-600 opacity-95 hover:bg-red-600 gap-2 font-bold justify-center">
+                                                        <span>Event tickets soldout</span>
+                                                    </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </motion.div>
                 </div>
-                <CheckoutMenu checkout={checkout} setCheckout={setCheckout}></CheckoutMenu>
+                <ID subscriptionDetails={eventID} setShowID={setShowID} showID={showID}></ID>
+                <CheckoutMenu type="event" checkout={checkout} setCheckout={setCheckout}></CheckoutMenu>
             </section>
     )
 }

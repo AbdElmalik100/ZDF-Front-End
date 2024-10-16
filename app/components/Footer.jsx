@@ -72,7 +72,7 @@ function Footer() {
                             </div>
                         </div>
                     </div>
-                    <div className="copyright mt-24 text-xs text-neutral-500 flex items-center justify-between max-md:text-base max-md:justify-center">
+                    <div className="copyright mt-24 text-xs text-neutral-500 flex items-center justify-between max-md:text-base max-lg:justify-center">
                         <p>&copy; 2024 ZDF Inc, All rights reserved</p>
                     </div>
                 </div>

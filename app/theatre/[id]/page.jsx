@@ -86,8 +86,8 @@ function TheatreConfirmation() {
                                 <Icon icon='line-md:confirm-circle' fontSize={115} className='mx-auto mb-4 text-green-500' />
                                 <h3 className='font-semibold text-green-700'>Thanks for your time, your ID will arrive you soon, Enjoy the event.</h3>
                                 <Link href='/' className='main-btn mt-4 w-fit mx-auto flex items-center gap-2'>
-                                    <span>Back home</span>
                                     <Icon icon='solar:home-2-bold' fontSize={20} />
+                                    <span>Back home</span>
                                 </Link>
                             </motion.div>
                         </div>

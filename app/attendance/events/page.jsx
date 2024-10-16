@@ -30,8 +30,6 @@ function EventAttendance() {
 
 
     useEffect(() => {
-        if (isLoggedIn) console.log(query.get("event"));
-
         if (isLoggedIn) {
             setLoading(true)
             axios.post(`api/subscriptions/${query.get("event")}/attendance`, user)

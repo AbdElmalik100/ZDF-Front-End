@@ -3,66 +3,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { motion } from 'framer-motion'
 import SliderNavigation from './SliderNavigation'
+import { sliderObject } from '../constants/index'
 
 function Slider() {
-    const sliderObj = [
-        {
-            image: '95.png',
-            text: "Z Dental Forum 2024, Advancing Dentistry at Zagazig University's Faculty of Dentistry"
-        },
-        {
-            image: '1.png',
-            text: "Boost Your Practice with Digital Marketing Advice from Experts"
-        },
-        {
-            image: '97.png',
-            text: "Capture Precision: Dental Photography Tips from the Pros"
-        },
-        {
-            image: '102.png',
-            text: "Revolutionizing Imaging: Learn Mobile Dental Photography from the Best"
-        },
-        {
-            image: '103.png',
-            text: "Master Advanced and Rare Dental Cases with Expert Insights"
-        },
-        {
-            image: '105.png',
-            text: "Overcome Rare Dental Challenges with Guidance from Specialists"
-        },
-        {
-            image: '106.png',
-            text: "Innovative Dental Photography Techniques from Seasoned Professionals"
-        },
-        {
-            image: '119.png',
-            text: "Embrace Digital Dentistry, Insights from Visionary Leaders"
-        },
-        {
-            image: '120.png',
-            text: "Build Stronger Patient Connections, Communication Strategies from Experts"
-        },
-        {
-            image: '127.png',
-            text: "Achieve Excellence in Patient Management with Industry Leaders"
-        },
-        {
-            image: '130.png',
-            text: "Lead the Future of Dentistry: Visionary Ideas from Expert Speakers"
-        },
-        {
-            image: '133.png',
-            text: "Future-Ready Dentistry, Embrace Digital Innovation"
-        },
-        {
-            image: '134.png',
-            text: "Mastering Complex Operative Cases, Expert Approaches to Success"
-        },
-        {
-            image: '139.png',
-            text: "Innovative Techniques in Fiber-Reinforced Composite Dentistry"
-        },
-    ]
 
     return (
         <>
@@ -77,7 +20,7 @@ function Slider() {
                 modules={[Autoplay, Pagination, Navigation]}
             >
                 {
-                    sliderObj.map((obj, index) => (
+                    sliderObject.map((obj, index) => (
                         <SwiperSlide key={index}>
                             <motion.div
                                 initial={{ y: 50, opacity: 0, filter: 'blur(30px)' }}

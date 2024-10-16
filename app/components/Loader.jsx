@@ -1,6 +1,3 @@
-import { Icon } from '@iconify/react/dist/iconify.js'
-import React from 'react'
-
 function Loader() {
     return (
         <div className='min-h-screen grid place-items-center fixed bg-black/50 w-full h-full top-0 left-0 z-[99999999999]'>

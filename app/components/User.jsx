@@ -46,7 +46,7 @@ function User() {
                         <div className="mb-2 pb-4 border-b flex items-center p-2 gap-2">
                             <img src={user.avatar} className="rounded-full w-14 h-14" alt="" />
                             <div className="flex flex-col overflow-hidden">
-                                <span className="name block font-semibold truncate capitalize">
+                                <span className="name block font-semibold truncate">
                                     {user.first_name} {user.last_name}
                                 </span>
                                 <span className="text-sm text-sky-600 truncate">

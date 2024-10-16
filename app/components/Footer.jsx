@@ -30,12 +30,12 @@ function Footer() {
                                     </Link>
                                 </li>
                                 <li className="transition-all ease-in-out hover:text-white w-fit">
-                                    <Link href='/about'>
+                                    <Link href='/exhabition'>
                                         Exhabition
                                     </Link>
                                 </li>
                                 <li className="transition-all ease-in-out hover:text-white w-fit">
-                                    <Link href='/about'>
+                                    <Link href='/workshops'>
                                         Workshops
                                     </Link>
                                 </li>

@@ -13,6 +13,8 @@ import 'swiper/css/pagination';
 import "./globals.scss";
 import { Toaster } from "sonner";
 import axios from 'axios';
+import { Suspense } from "react";
+import Loader from './components/Loader'
 
 const jost = Jost({ subsets: ['latin'] })
 
@@ -31,7 +33,9 @@ export default function RootLayout({ children }) {
             <Toaster closeButton richColors />
             {pathname == '/login' ? null : <Header />}
             <Main>
-              {children}
+              <Suspense fallback={<Loader />}>
+                {children}
+              </Suspense>
             </Main>
             {pathname == '/login' ? null : <Footer />}
           </Provider>

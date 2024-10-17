@@ -15,7 +15,7 @@ function Payment({searchParams}) {
 
     useEffect(() => {
         if (localStorage.getItem("PCO")) {
-            console.log(searchParams.success);
+            console.log(searchParams);
             
             if (searchParams.success === 'true') {                
                 console.log("success here");

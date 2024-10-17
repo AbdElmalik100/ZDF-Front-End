@@ -10,7 +10,7 @@ function Footer() {
         <motion.div
             initial={{ y: 25, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            transition={{ease: "easeOut"}}
+            transition={{ ease: "easeOut" }}
         >
             <footer className="py-12 bg-neutral-900 text-neutral-300">
                 <div className="container">
@@ -18,7 +18,7 @@ function Footer() {
                         <div className="left">
                             <div className="logo">
                                 <Link href='/'>
-                                    <Image src={darkLogo} width={125} alt="ZDF Logo" ></Image>
+                                    <Image priority src={darkLogo} className="h-auto w-auto" width={125} alt="ZDF Logo Dark" ></Image>
                                 </Link>
                             </div>
                         </div>

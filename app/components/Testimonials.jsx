@@ -1,5 +1,6 @@
+'use client'
 import { Icon } from "@iconify/react/dist/iconify.js"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from 'framer-motion'
 
 function Testimonials() {
@@ -15,6 +16,30 @@ function Testimonials() {
             testimonials.current.pause()
         }
     }
+
+    useEffect(() => {
+        const videoElement = testimonials.current;
+
+        const handlePlay = () => {
+            setIsPaused(false);
+        };
+
+        const handlePause = () => {
+            setIsPaused(true); 
+        };
+
+        if (videoElement) {
+            videoElement.addEventListener('play', handlePlay);
+            videoElement.addEventListener('pause', handlePause);
+        }
+
+        return () => {
+            if (videoElement) {
+                videoElement.removeEventListener('play', handlePlay);
+                videoElement.removeEventListener('pause', handlePause);
+            }
+        };
+    }, []);
 
     return (
         <section className="testimonials py-32 overflow-hidden">
@@ -32,7 +57,7 @@ function Testimonials() {
                         }
                         <Icon icon={isPaused ? 'material-symbols:play-arrow-rounded' : 'material-symbols:pause-rounded'} fontSize={38} />
                     </button>
-                    <video ref={testimonials} className="rounded-3xl shadow-xl shadow-sky-500/25">
+                    <video ref={testimonials} controls className="rounded-3xl shadow-xl shadow-sky-500/25">
                         <source src='/zdf-testimonials.mp4' type="video/mp4" />
                     </video>
                 </motion.div>

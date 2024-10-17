@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation"
 import User from '../components/User'
 import { useSelector } from "react-redux"
 import MobileMenu from './MobileMenu'
-import { useRef } from "react"
 
 function Header() {
     const pathname = usePathname()
@@ -17,7 +16,7 @@ function Header() {
             <div className="container px-4 flex items-center gap-5 justify-between">
                 <div className="logo">
                     <Link href='/'>
-                        <Image src={logo} width={75} alt="ZDF Logo"></Image>
+                        <Image priority src={logo} width={75} alt="ZDF Logo"></Image>
                     </Link>
                 </div>
                 <ul className="links flex items-center gap-3 max-md:hidden">

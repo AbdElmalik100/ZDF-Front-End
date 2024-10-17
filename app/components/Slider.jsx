@@ -4,6 +4,7 @@ import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { motion } from 'framer-motion'
 import SliderNavigation from './SliderNavigation'
 import { sliderObject } from '../constants/index'
+import Image from 'next/image';
 
 function Slider() {
 
@@ -32,7 +33,7 @@ function Slider() {
                                     {obj.text}
                                 </h2>
                             </motion.div>
-                            <img className='w-full h-full object-cover xl:object-[100%,-30px] object-center relative' src={`/images/${obj.image}`} alt="" />
+                            <Image priority className='w-full h-full object-cover xl:object-[100%,-30px] object-center relative' width={1200} height={800} src={`/images/${obj.image}`} alt="" />
                             <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent from-50% to-100% to-sky-600/75'></div>
                         </SwiperSlide>
                     ))

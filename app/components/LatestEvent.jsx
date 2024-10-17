@@ -28,12 +28,13 @@ function LatestEvent() {
             checker ? setEventID(checker) : setEventID(null)
         } else setEventID(null)
     }, [subscriptions, event, isLoggedIn])
-
+    
     return (
-        loading || !event
+        loading
             ?
             <Loader></Loader>
             :
+            event &&
             <section className="latest-event py-32">
                 <div className="container px-4">
                     <motion.div

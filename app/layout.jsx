@@ -33,9 +33,9 @@ export default function RootLayout({ children }) {
             <Toaster closeButton richColors />
             {pathname == '/login' ? null : <Header />}
             <Main>
-              <Suspense fallback={<Loader></Loader>}>
+              {/* <Suspense fallback={<Loader></Loader>}> */}
                 {children}
-              </Suspense>
+              {/* </Suspense> */}
             </Main>
             {pathname == '/login' ? null : <Footer />}
           </Provider>

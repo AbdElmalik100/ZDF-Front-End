@@ -12,7 +12,7 @@ function Header() {
     const user = useSelector(state => state.users.user)
 
     return (
-        <header className='py-3 border-b fixed w-full top-0 bg-neutral-50/50 z-[999999] h-[62px] backdrop-blur-sm grid place-items-center'>
+        <header className='py-3 border-b fixed w-full top-0 bg-neutral-50/50 z-[999] h-[62px] backdrop-blur-sm grid place-items-center'>
             <div className="container px-4 flex items-center gap-5 justify-between">
                 <div className="logo">
                     <Link href='/'>

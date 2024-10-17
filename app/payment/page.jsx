@@ -15,7 +15,11 @@ function Payment({searchParams}) {
 
     useEffect(() => {
         if (localStorage.getItem("PCO")) {
+            console.log(searchParams.success);
+            
             if (searchParams.success === 'true') {                
+                console.log("success here");
+                
                 setIsSuccess(true)
                 const paymentData = JSON.parse(localStorage.getItem("PCO"))
                 const subscriptionData = {
@@ -34,7 +38,7 @@ function Payment({searchParams}) {
                     })
             } else setIsSuccess(false)
         } else router.push("/")
-    }, [])
+    }, [searchParams])
     return (
         <div className='payment-accept-reject min-h-screen'>
             {

@@ -3,20 +3,19 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 import Image from 'next/image'
 import Link from 'next/link'
 import ZDFLogo from '../assets/images/ZDF - Z Dental Forum Black.png'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 
-function Payment() {
-    const query = useSearchParams()
+function Payment({searchParams}) {
     const [isSuccess, setIsSuccess] = useState(false)
     const { isLoggedIn } = useSelector(state => state.users)
     const router = useRouter()
 
     useEffect(() => {
         if (localStorage.getItem("PCO")) {
-            if (query.get("success") === 'true') {
+            if (searchParams.success === 'true') {                
                 setIsSuccess(true)
                 const paymentData = JSON.parse(localStorage.getItem("PCO"))
                 const subscriptionData = {

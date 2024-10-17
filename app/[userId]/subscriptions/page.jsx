@@ -49,7 +49,7 @@ function Subsciriptions() {
             :
             <div className='content p-4 bg-white shadow-md rounded-lg w-full'>
                 <h2 className='font-bold text-2xl'>Subscriptions history</h2>
-                <div className='filters mt-5 flex items-center gap-2'>
+                <div className='filters mt-5 flex items-center gap-2 flex-wrap'>
                     {
                         filters.map((filterData, index) => (
                             <button key={index} onClick={() => applyFilter(filterData)} className={`${filter === filterData ? "main-btn border-transparent" : "alt-btn"} border py-1`}>{filterData}</button>

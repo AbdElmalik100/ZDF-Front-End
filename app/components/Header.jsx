@@ -26,8 +26,8 @@ function Header() {
                         </Link>
                     </li>
                     <li className={`link-hover ${pathname.includes('/exhabition') ? 'link-active' : ''}`}>
-                        <Link href='/exhabition'>
-                            Exhabition
+                        <Link href='/exhibition'>
+                            Exhibition
                         </Link>
                     </li>
                     <li className={`link-hover ${pathname.includes('/workshops') ? 'link-active' : ''}`}>

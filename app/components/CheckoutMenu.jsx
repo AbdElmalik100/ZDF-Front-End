@@ -4,14 +4,87 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useClickAway } from '@uidotdev/usehooks'
-import { startCardProcess, startWalletProcess } from "paymob-react"; // Import the startWalletProcess function
 import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { formatCurrency } from '../lib/utils'
 import Tooltip from '../components/Tooltip'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 
 function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+
+    const [paymentData, setPaymentData] = useState({
+        "amount": (100 * 100),
+        "currency": "EGP",
+        "payment_methods": [
+            4842484,
+            4842487,
+        ],
+
+        "items": [
+            {
+                "id": "",
+                "image": '',
+                "name": "Item name 1",
+                "amount": (100 * 100),
+                "description": "Watch",
+            }
+        ],
+        "billing_data": {
+            "apartment": "",
+            "first_name": "Ammar",
+            "last_name": "Sadek",
+            "street": "",
+            "building": "",
+            "phone_number": "+96824480228",
+            "country": "Egypt",
+            "email": "AmmarSadek@gmail.com",
+            "floor": "",
+            "state": ""
+        },
+        "customer": {
+            "first_name": "Ammar",
+            "last_name": "Sadek",
+            "email": "AmmarSadek@gmail.com"
+        }
+    })
+
+    const payment = async (paymentData) => {
+        await axios.post("https://accept.paymob.com/v1/intention/", paymentData, {
+            headers: {
+                Authorization: `Token ${process.env.NEXT_PUBLIC_PAYMOB_SECRET_KEY}`
+            },
+        })
+            .then(response => {
+                console.log(response);
+                router.push(`https://accept.paymob.com/unifiedcheckout/?publicKey=${process.env.NEXT_PUBLIC_PAYMOB_PUBLIC_KEY}&clientSecret=${response.data.client_secret}`)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    const handlePayment = (type, paymentTab) => {
+        try {
+            setLoading(true);
+            localStorage.setItem("PCO", JSON.stringify({ ...paymentData, type: type }));
+            if (paymentTab === 'card') {
+                const transferedData = { ...paymentData, payment_methods: [4842484] }
+                payment(transferedData)
+            } else {
+                const transferedData = { ...paymentData, payment_methods: [4842487] }
+                payment(transferedData)
+            }
+            console.log(`${paymentTab} payment process started successfully.`);
+        } catch (error) {
+            setLoading(false);
+            console.error(`Error starting ${paymentTab} payment process:`, error);
+        }
+    };
+
 
 
     const EventCheckoutRender = () => {
@@ -19,56 +92,35 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
         const { user } = useSelector(state => state.users)
         const [eventData, setEventData] = useState({ ...event })
         const [paymentTab, setPaymentTab] = useState('card')
-        const [phoneNumber, setPhoneNumber] = useState("")
         const checkoutRef = useClickAway(() => {
             setCheckout(false)
         })
-        const [loading, setLoading] = useState(false)
-
-        const generatePaymentDetails = (type) => {
-            return {
-                amount: eventData.net_total,
-                currency: "EGP",
-                courseTitle: eventData.title,
-                courseDescription: eventData.description,
-                firstName: user?.first_name,
-                lastName: user?.last_name,
-                email: user?.email,
-                phoneNumber: user?.phone_number || "+2001011308220",
-                userId: user?._id,
-                courseId: eventData._id,
-                paymobApiKey: process.env.NEXT_PUBLIC_PAYMOB_API_KEY,
-                ...(type === 'card' ? { cardIntegrationId: 4842484, iframeId: 871307 } : { walletIntegrationId: 4842487, iframeId: 871307, mobileNumber: phoneNumber }),
-            };
-        }
-
-
-        const handlePayment = async () => {
-            try {
-                setLoading(true);
-                const paymentDetails = generatePaymentDetails(paymentTab);
-                localStorage.setItem("PCO", JSON.stringify({ ...paymentDetails, type: "workshop" }));
-        
-                if (paymentTab === 'card') {
-                    await startCardProcess(...Object.values(paymentDetails));
-                } else {
-                    await startWalletProcess(...Object.values(paymentDetails));
-                }
-        
-                console.log(`${paymentTab} payment process started successfully.`);
-            } catch (error) {
-                setLoading(false);
-                console.error(`Error starting ${paymentTab} payment process:`, error);
-            }
-        };
-
 
         useEffect(() => {
             const tax = ((eventData.ticket_price * 5) / 100)
+            const totalCalcualtion = (+eventData.ticket_price + tax)
             checkout ? document.body.style.overflow = "hidden" : document.body.style.overflow = "visible"
             setPaymentTab("card")
-            setPhoneNumber("")
-            setEventData({ ...eventData, tax: tax, net_total: +eventData.ticket_price + tax })
+            setEventData({ ...eventData, tax: tax, net_total: totalCalcualtion})
+            setPaymentData({
+                ...paymentData,
+                amount: (totalCalcualtion * 100),
+                items: [
+                    {
+                        id: event._id,
+                        image: event.image,
+                        name: event.title,
+                        amount: (totalCalcualtion * 100),
+                        description: event.description.substr(0, 100)
+                    }
+                ],
+                customer: {
+                    id: user?._id,
+                    first_name: user?.first_name,
+                    last_name: user?.last_name,
+                    email: user?.email,
+                }
+            })
         }, [checkout])
 
         return (
@@ -153,24 +205,10 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                             </div>
                                         </div>
                                     </div>
-                                    {
-                                        paymentTab === "wallet" &&
-                                        <div className="mt-4">
-                                            <label>
-                                                <span className="block mb-1">Phone Number</span>
-                                                <input type="tel"
-                                                    placeholder="Your phone number"
-                                                    name="phone_number"
-                                                    value={phoneNumber}
-                                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                                />
-                                            </label>
-                                        </div>
-                                    }
                                 </div>
                                 <div className="mt-auto">
                                     <button className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={handlePayment}
+                                        onClick={() => handlePayment('event', paymentTab)}
                                         disabled={loading}
                                     >
                                         {
@@ -200,59 +238,36 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
         const { user } = useSelector(state => state.users)
         const [workshopData, setWorkshopData] = useState({ ...workshop })
         const [paymentTab, setPaymentTab] = useState('card')
-        const [phoneNumber, setPhoneNumber] = useState("")
         const checkoutRef = useClickAway(() => {
             setCheckout(false)
         })
-        const [loading, setLoading] = useState(false)
 
 
-        const generatePaymentDetails = (type) => {
-            return {
-                amount: workshopData.net_total,
-                currency: "EGP",
-                courseTitle: workshopData.title,
-                courseDescription: workshopData.description,
-                firstName: user?.first_name,
-                lastName: user?.last_name,
-                email: user?.email,
-                phoneNumber: user?.phone_number || "+2001011308220",
-                userId: user?._id,
-                courseId: workshopData._id,
-                paymobApiKey: process.env.NEXT_PUBLIC_PAYMOB_API_KEY,
-                ...(type === 'card' ? { cardIntegrationId: 4842484, iframeId: 871307 } : { walletIntegrationId: 4842487, iframeId: 871307, mobileNumber: phoneNumber }),
-            };
-        }
-
-
-        const handlePayment = async () => {
-            try {
-                setLoading(true);
-                const paymentDetails = generatePaymentDetails(paymentTab);
-                localStorage.setItem("PCO", JSON.stringify({ ...paymentDetails, type: "workshop" }));
-        
-                if (paymentTab === 'card') {
-                    await startCardProcess(...Object.values(paymentDetails));
-                } else {
-                    await startWalletProcess(...Object.values(paymentDetails));
-                }
-        
-                console.log(`${paymentTab} payment process started successfully.`);
-            } catch (error) {
-                setLoading(false);
-                console.error(`Error starting ${paymentTab} payment process:`, error);
-            }
-        };
-        
-
-        useEffect(() => {            
+        useEffect(() => {
             const tax = ((5 * workshop.price) / 100)
             const totalCalcualtion = (workshop.price - ((workshop.price * workshop.discount) / 100)) + tax
             checkout ? document.body.style.overflow = "hidden" : document.body.style.overflow = "visible"
             setPaymentTab("card")
-            setPhoneNumber("")
             setWorkshopData({ ...workshop, tax: tax, net_total: totalCalcualtion })
-            
+            setPaymentData({
+                ...paymentData,
+                amount: (totalCalcualtion * 100),
+                items: [
+                    {
+                        id: workshop._id,
+                        image: workshop.image,
+                        name: workshop.title,
+                        amount: (totalCalcualtion * 100),
+                        description: workshop.description.substr(0, 100)
+                    }
+                ],
+                customer: {
+                    id: user?._id,
+                    first_name: user?.first_name,
+                    last_name: user?.last_name,
+                    email: user?.email,
+                }
+            })
         }, [checkout])
 
         return (
@@ -358,25 +373,11 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                             </div>
                                         </div>
                                     </div>
-                                    {paymentTab === "wallet" && (
-                                        <div className="mt-4">
-                                            <label>
-                                                <span className="block mb-1">Phone Number</span>
-                                                <input
-                                                    type="tel"
-                                                    placeholder="Your phone number"
-                                                    name="phone_number"
-                                                    value={phoneNumber}
-                                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                                />
-                                            </label>
-                                        </div>
-                                    )}
                                 </div>
                                 <div className="mt-auto">
                                     <button
                                         className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={handlePayment}
+                                        onClick={() => handlePayment('workshop', paymentTab)}
                                         disabled={loading}
                                     >
                                         {loading ? (
@@ -404,57 +405,35 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
         const { user } = useSelector(state => state.users)
         const [bundleData, setBundleData] = useState({ ...bundle })
         const [paymentTab, setPaymentTab] = useState('card')
-        const [phoneNumber, setPhoneNumber] = useState("")
         const checkoutRef = useClickAway(() => {
             setCheckout(false)
         })
-        const [loading, setLoading] = useState(false)
-
-        const generatePaymentDetails = (type) => {
-            return {
-                amount: bundleData.net_total,
-                currency: "EGP",
-                courseTitle: bundleData.title,
-                courseDescription: bundleData.title,
-                firstName: user?.first_name,
-                lastName: user?.last_name,
-                email: user?.email,
-                phoneNumber: user?.phone_number || "+2001011308220",
-                userId: user?._id,
-                courseId: bundleData._id,
-                paymobApiKey: process.env.NEXT_PUBLIC_PAYMOB_API_KEY,
-                ...(type === 'card' ? { cardIntegrationId: 4842484, iframeId: 871307 } : { walletIntegrationId: 4842487, iframeId: 871307, mobileNumber: phoneNumber }),
-            };
-        }
-
-
-        const handlePayment = async () => {
-            try {
-                setLoading(true);
-                const paymentDetails = generatePaymentDetails(paymentTab);
-                localStorage.setItem("PCO", JSON.stringify({ ...paymentDetails, type: "workshop" }));
-        
-                if (paymentTab === 'card') {
-                    await startCardProcess(...Object.values(paymentDetails));
-                } else {
-                    await startWalletProcess(...Object.values(paymentDetails));
-                }
-        
-                console.log(`${paymentTab} payment process started successfully.`);
-            } catch (error) {
-                setLoading(false);
-                console.error(`Error starting ${paymentTab} payment process:`, error);
-            }
-        };
-
 
         useEffect(() => {
-            const tax = ((5 * bundle.price) / 100)            
+            const tax = ((5 * bundle.price) / 100)
             const totalCalcualtion = +bundle.price + tax
             checkout ? document.body.style.overflow = "hidden" : document.body.style.overflow = "visible"
             setPaymentTab("card")
-            setPhoneNumber("")
-            setBundleData({ ...bundle, tax: tax, net_total: totalCalcualtion })            
+            setBundleData({ ...bundle, tax: tax, net_total: totalCalcualtion })
+            setPaymentData({
+                ...paymentData,
+                amount: (totalCalcualtion * 100),
+                items: [
+                    {
+                        id: bundle._id,
+                        image: bundle.image,
+                        name: bundle.title,
+                        amount: (totalCalcualtion * 100),
+                        description: bundle.description.substr(0, 100)
+                    }
+                ],
+                customer: {
+                    id: user?._id,
+                    first_name: user?.first_name,
+                    last_name: user?.last_name,
+                    email: user?.email,
+                }
+            })
         }, [checkout])
 
         return (
@@ -542,25 +521,11 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                             </div>
                                         </div>
                                     </div>
-                                    {paymentTab === "wallet" && (
-                                        <div className="mt-4">
-                                            <label>
-                                                <span className="block mb-1">Phone Number</span>
-                                                <input
-                                                    type="tel"
-                                                    placeholder="Your phone number"
-                                                    name="phone_number"
-                                                    value={phoneNumber}
-                                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                                />
-                                            </label>
-                                        </div>
-                                    )}
                                 </div>
                                 <div className="mt-auto">
                                     <button
                                         className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={handlePayment}
+                                        onClick={() => handlePayment('bundle', paymentTab)}
                                         disabled={loading}
                                     >
                                         {loading ? (

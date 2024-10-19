@@ -16,6 +16,7 @@ function Subsciriptions() {
     const filters = ['all', 'events', 'workshops', 'bundles']
     const [filter, setFilter] = useState('all')
 
+
     const applyFilter = (filterData) => {
         setFilter(filterData)
         switch (filterData) {

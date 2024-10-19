@@ -22,10 +22,10 @@ function Payment() {
                 const paymentData = JSON.parse(localStorage.getItem("PCO"))
                 const subscriptionData = {
                     amount: paymentData.amount,
-                    user: paymentData.userId,
-                    event: paymentData.type === 'event' ? paymentData.courseId : null,
-                    workshop: paymentData.type === 'workshop' ? paymentData.courseId : null,
-                    bundle: paymentData.type === 'bundle' ? paymentData.courseId : null
+                    user: paymentData.customer.id,
+                    event: paymentData.type === 'event' ? paymentData.items[0].id : null,
+                    workshop: paymentData.type === 'workshop' ? paymentData.items[0].id : null,
+                    bundle: paymentData.type === 'bundle' ? paymentData.items[0].id : null
                 }
                 axios.post('api/subscriptions', subscriptionData)
                     .then(response => {

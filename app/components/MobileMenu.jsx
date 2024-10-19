@@ -39,13 +39,13 @@ function MobileMenu() {
                             <Icon icon="iconoir:xmark" className="mb-auto ms-auto cursor-pointer m-5" fontSize={35} onClick={() => setShowMenu(false)}></Icon>
                             <ul className="flex flex-col gap-4 mb-auto items-center text-2xl p-5">
                                 <li>
-                                    <Link href='/about'>About</Link>
+                                    <Link href='/about' onClick={() => setShowMenu(false)}>About</Link>
                                 </li>
                                 <li>
-                                    <Link href='/exhabition'>Exhabition</Link>
+                                    <Link href='/exhibition' onClick={() => setShowMenu(false)}>Exhibition</Link>
                                 </li>
                                 <li>
-                                    <Link href='/workshops'>Workshops</Link>
+                                    <Link href='/workshops' onClick={() => setShowMenu(false)}>Workshops</Link>
                                 </li>
                             </ul>
                             {

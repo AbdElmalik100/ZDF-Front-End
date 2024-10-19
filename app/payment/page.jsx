@@ -21,7 +21,7 @@ function Payment() {
                 setIsSuccess(true)
                 const paymentData = JSON.parse(localStorage.getItem("PCO"))
                 const subscriptionData = {
-                    amount: paymentData.amount,
+                    amount: paymentData.amount / 100,
                     user: paymentData.customer.id,
                     event: paymentData.type === 'event' ? paymentData.items[0].id : null,
                     workshop: paymentData.type === 'workshop' ? paymentData.items[0].id : null,

@@ -145,7 +145,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                             className="checkout-menu bg-white absolute right-0 top-0 h-full w-[375px] max-md:w-full flex flex-col"
                         >
                             <div className="flex-grow h-full flex flex-col p-5 overflow-auto [&:scrollbar-width:none]">
-                                <div className="close">
+                                <div className="close mb-3">
                                     <Icon icon="iconoir:xmark" className="ms-auto cursor-pointer" fontSize={35} onClick={() => setCheckout(false)}></Icon>
                                 </div>
                                 <img className='w-full rounded-xl object-cover' src={eventData.image} alt="Event image" />

@@ -67,7 +67,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
             })
     }
 
-    const handlePayment = (type, paymentTab) => {
+    const handlePayment = (type, paymentTab) => {        
         try {
             setLoading(true);
             localStorage.setItem("PCO", JSON.stringify({ ...paymentData, type: type }));
@@ -114,6 +114,18 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                         description: event.description.substr(0, 100)
                     }
                 ],
+                billing_data: {
+                    apartment: "",
+                    first_name: user?.first_name,
+                    last_name: user?.last_name,
+                    street: "",
+                    building: "",
+                    phone_number: user?.phone_number || "N/A",
+                    country: "Egypt",
+                    email: user?.email,
+                    floor: "",
+                    state: ""
+                },
                 customer: {
                     id: user?._id,
                     first_name: user?.first_name,
@@ -121,7 +133,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                     email: user?.email,
                 }
             })
-        }, [checkout])
+        }, [checkout, user])
 
         return (
             <AnimatePresence>
@@ -261,6 +273,18 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                         description: workshop.description.substr(0, 100)
                     }
                 ],
+                billing_data: {
+                    apartment: "",
+                    first_name: user?.first_name,
+                    last_name: user?.last_name,
+                    street: "",
+                    building: "",
+                    phone_number: user?.phone_number || "N/A",
+                    country: "Egypt",
+                    email: user?.email,
+                    floor: "",
+                    state: ""
+                },
                 customer: {
                     id: user?._id,
                     first_name: user?.first_name,
@@ -268,7 +292,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                     email: user?.email,
                 }
             })
-        }, [checkout])
+        }, [checkout, user])
 
         return (
             <AnimatePresence>
@@ -427,6 +451,18 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                         description: bundle.description.substr(0, 100)
                     }
                 ],
+                billing_data: {
+                    apartment: "",
+                    first_name: user?.first_name,
+                    last_name: user?.last_name,
+                    street: "",
+                    building: "",
+                    phone_number: user?.phone_number || "N/A",
+                    country: "Egypt",
+                    email: user?.email,
+                    floor: "",
+                    state: ""
+                },
                 customer: {
                     id: user?._id,
                     first_name: user?.first_name,
@@ -434,7 +470,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                     email: user?.email,
                 }
             })
-        }, [checkout])
+        }, [checkout, user])
 
         return (
             <AnimatePresence>

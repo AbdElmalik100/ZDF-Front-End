@@ -101,7 +101,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
             const totalCalcualtion = (+eventData.ticket_price + tax)
             checkout ? document.body.style.overflow = "hidden" : document.body.style.overflow = "visible"
             setPaymentTab("card")
-            setEventData({ ...eventData, tax: tax, net_total: totalCalcualtion})
+            setEventData({ ...eventData, tax: tax, net_total: totalCalcualtion })
             setPaymentData({
                 ...paymentData,
                 amount: (totalCalcualtion * 100),
@@ -144,88 +144,90 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                             ref={checkoutRef}
                             className="checkout-menu bg-white p-5 absolute right-0 top-0 h-full w-[375px] max-md:w-full flex flex-col"
                         >
-                            <div className="close">
-                                <Icon icon="iconoir:xmark" className="ms-auto cursor-pointer" fontSize={35} onClick={() => setCheckout(false)}></Icon>
-                            </div>
-                            <div className="mt-3 h-full flex flex-col">
-                                <img className='w-full rounded-xl object-cover' src={eventData.image} alt="Event image" />
-                                <div className="info mt-2">
-                                    <h2 className="text-xl font-bold capitalize">{eventData.title}</h2>
-                                    <ul className="event-info flex flex-col text-sm mt-3 gap-3">
-                                        <li className="flex items-center gap-2">
-                                            <Icon icon="ic:round-location-on" fontSize={20} />
-                                            <span className="flex-1 capitalize">{eventData.venue}</span>
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <Icon icon="solar:calendar-minimalistic-bold" fontSize={20} />
-                                            <span>{new Date(eventData.date).toLocaleDateString()}</span>
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <Icon icon="mdi:clock-time-five" fontSize={20} />
-                                            <span>
-                                                {moment(eventData.time_from, "HH:mm:ss").format("hh:mm A")} - {moment(eventData.time_to, "HH:mm:ss").format("hh:mm A")}
-                                            </span>
-                                        </li>
-                                    </ul>
-                                    <div className="price mt-8 text-neutral-400 text-sm font-normal flex flex-col gap-1">
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span>Ticket price</span>
-                                            <span>{formatCurrency.format(eventData.ticket_price)}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span>Discount %</span>
-                                            <span>{formatCurrency.format(0)}</span>
-                                        </div>
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span className='flex items-center gap-1'>Tax (5%) <Tooltip></Tooltip></span>
-                                            <span>{formatCurrency.format(eventData.tax)}</span>
-                                        </div>
-                                        <div className="mt-2 pt-2 border-t font-bold text-xl text-neutral-950 flex items-center justify-between gap-2">
-                                            <span>Total</span>
-                                            <span>{formatCurrency.format(eventData.net_total)}</span>
-                                        </div>
-                                    </div>
+                            <div className="flex-grow h-full flex flex-col p-5 overflow-auto [&:scrollbar-width:none]">
+                                <div className="close">
+                                    <Icon icon="iconoir:xmark" className="ms-auto cursor-pointer" fontSize={35} onClick={() => setCheckout(false)}></Icon>
                                 </div>
-                                <div className="payment-method mt-5">
-                                    <h3 className="font-bold">Choose your payment method</h3>
-                                    <div className="tabs flex items-start gap-2 mt-3 flex-col">
-                                        <div onClick={() => setPaymentTab("card")}
-                                            className={`border p-2 transition-all ease-in-out px-4 w-full items-center justify-start flex gap-2 rounded-lg cursor-pointer hover:bg-neutral-50  ${paymentTab === 'card' ? "text-sky-400 border-sky-400" : ""}`}>
-                                            <Icon icon="bi:credit-card-fill" fontSize={24} />
-                                            <div className="flex flex-col">
-                                                <span>Credit/Debit Card</span>
+                                <div className="mt-3 h-full flex flex-col">
+                                    <img className='w-full rounded-xl object-cover' src={eventData.image} alt="Event image" />
+                                    <div className="info mt-2">
+                                        <h2 className="text-xl font-bold capitalize">{eventData.title}</h2>
+                                        <ul className="event-info flex flex-col text-sm mt-3 gap-3">
+                                            <li className="flex items-center gap-2">
+                                                <Icon icon="ic:round-location-on" fontSize={20} />
+                                                <span className="flex-1 capitalize">{eventData.venue}</span>
+                                            </li>
+                                            <li className="flex items-center gap-2">
+                                                <Icon icon="solar:calendar-minimalistic-bold" fontSize={20} />
+                                                <span>{new Date(eventData.date).toLocaleDateString()}</span>
+                                            </li>
+                                            <li className="flex items-center gap-2">
+                                                <Icon icon="mdi:clock-time-five" fontSize={20} />
+                                                <span>
+                                                    {moment(eventData.time_from, "HH:mm:ss").format("hh:mm A")} - {moment(eventData.time_to, "HH:mm:ss").format("hh:mm A")}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <div className="price mt-8 text-neutral-400 text-sm font-normal flex flex-col gap-1">
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span>Ticket price</span>
+                                                <span>{formatCurrency.format(eventData.ticket_price)}</span>
                                             </div>
-                                        </div>
-                                        <div onClick={() => setPaymentTab("wallet")}
-                                            className={`border p-2 transition-all ease-in-out px-4 items-center justify-start flex gap-2 w-full rounded-lg cursor-pointer hover:bg-neutral-50  ${paymentTab === 'wallet' ? "text-sky-400 border-sky-400" : ""}`}>
-                                            <Icon icon="fluent:wallet-credit-card-48-filled" fontSize={24} />
-                                            <div className="flex flex-col">
-                                                <span>Mobile Wallet</span>
-                                                <span className="text-neutral-400 text-xs">Vodafone, Orange, Etisalat, CIB, or any e-wallet</span>
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span>Discount %</span>
+                                                <span>{formatCurrency.format(0)}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className='flex items-center gap-1'>Tax (5%) <Tooltip></Tooltip></span>
+                                                <span>{formatCurrency.format(eventData.tax)}</span>
+                                            </div>
+                                            <div className="mt-2 pt-2 border-t font-bold text-xl text-neutral-950 flex items-center justify-between gap-2">
+                                                <span>Total</span>
+                                                <span>{formatCurrency.format(eventData.net_total)}</span>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="mt-auto">
-                                    <button className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={() => handlePayment('event', paymentTab)}
-                                        disabled={loading}
-                                    >
-                                        {
-                                            loading
-                                                ?
-                                                <>
-                                                    <span>Processing...</span>
-                                                    <Icon icon="iconamoon:synchronize-fill" className='animate-spin' fontSize={22} />
-                                                </>
-                                                :
-                                                <>
-                                                    <span>Proceed to payment</span>
-                                                    <Icon icon="material-symbols:check-rounded" fontSize={22} />
-                                                </>
-                                        }
-                                    </button>
-                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="" />
+                                    <div className="payment-method mt-5">
+                                        <h3 className="font-bold">Choose your payment method</h3>
+                                        <div className="tabs flex items-start gap-2 mt-3 flex-col">
+                                            <div onClick={() => setPaymentTab("card")}
+                                                className={`border p-2 transition-all ease-in-out px-4 w-full items-center justify-start flex gap-2 rounded-lg cursor-pointer hover:bg-neutral-50  ${paymentTab === 'card' ? "text-sky-400 border-sky-400" : ""}`}>
+                                                <Icon icon="bi:credit-card-fill" fontSize={24} />
+                                                <div className="flex flex-col">
+                                                    <span>Credit/Debit Card</span>
+                                                </div>
+                                            </div>
+                                            <div onClick={() => setPaymentTab("wallet")}
+                                                className={`border p-2 transition-all ease-in-out px-4 items-center justify-start flex gap-2 w-full rounded-lg cursor-pointer hover:bg-neutral-50  ${paymentTab === 'wallet' ? "text-sky-400 border-sky-400" : ""}`}>
+                                                <Icon icon="fluent:wallet-credit-card-48-filled" fontSize={24} />
+                                                <div className="flex flex-col">
+                                                    <span>Mobile Wallet</span>
+                                                    <span className="text-neutral-400 text-xs">Vodafone, Orange, Etisalat, CIB, or any e-wallet</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-auto">
+                                        <button className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
+                                            onClick={() => handlePayment('event', paymentTab)}
+                                            disabled={loading}
+                                        >
+                                            {
+                                                loading
+                                                    ?
+                                                    <>
+                                                        <span>Processing...</span>
+                                                        <Icon icon="iconamoon:synchronize-fill" className='animate-spin' fontSize={22} />
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <span>Proceed to payment</span>
+                                                        <Icon icon="material-symbols:check-rounded" fontSize={22} />
+                                                    </>
+                                            }
+                                        </button>
+                                        <img src="/images/paymob.png" className="w-24 mx-auto" alt="" />
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>

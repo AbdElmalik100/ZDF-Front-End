@@ -10,6 +10,7 @@ import { formatCurrency } from '../lib/utils'
 import Tooltip from '../components/Tooltip'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import Link from 'next/link'
 
 
 function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
@@ -67,7 +68,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
             })
     }
 
-    const handlePayment = (type, paymentTab) => {        
+    const handlePayment = (type, paymentTab) => {
         try {
             setLoading(true);
             localStorage.setItem("PCO", JSON.stringify({ ...paymentData, type: type }));
@@ -118,13 +119,13 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                     apartment: "",
                     first_name: user?.first_name,
                     last_name: user?.last_name,
-                    street: "",
+                    street: user?.address || "",
                     building: "",
-                    phone_number: user?.phone_number || "N/A",
-                    country: "Egypt",
+                    phone_number: user?.phone_number,
+                    country: user?.country || 'Egypt',
                     email: user?.email,
                     floor: "",
-                    state: ""
+                    state: user?.city || ""
                 },
                 customer: {
                     id: user?._id,
@@ -219,25 +220,37 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                     </div>
                                 </div>
                                 <div className="mt-auto">
-                                    <button className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={() => handlePayment('event', paymentTab)}
-                                        disabled={loading}
-                                    >
-                                        {
-                                            loading
-                                                ?
-                                                <>
-                                                    <span>Processing...</span>
-                                                    <Icon icon="iconamoon:synchronize-fill" className='animate-spin' fontSize={22} />
-                                                </>
-                                                :
-                                                <>
-                                                    <span>Proceed to payment</span>
-                                                    <Icon icon="material-symbols:check-rounded" fontSize={22} />
-                                                </>
-                                        }
-                                    </button>
-                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="" />
+                                    {
+                                        user.phone_number !== ''
+                                            ?
+                                            <button className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
+                                                onClick={() => handlePayment('event', paymentTab)}
+                                                disabled={loading}
+                                            >
+                                                {
+                                                    loading
+                                                        ?
+                                                        <>
+                                                            <span>Processing...</span>
+                                                            <Icon icon="iconamoon:synchronize-fill" className='animate-spin' fontSize={22} />
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <span>Proceed to payment</span>
+                                                            <Icon icon="material-symbols:check-rounded" fontSize={22} />
+                                                        </>
+                                                }
+                                            </button>
+                                            :
+                                            <div className='p-2 px-3 mb-3 rounded-xl border border-yellow-600 text-yellow-600'>
+                                                <div className=' flex text-sm items-start gap-2'>
+                                                    <Icon icon='fluent:warning-24-filled' className='mt-1' fontSize={20}></Icon>
+                                                    <p className='flex-1'>You must complete your profile information first to continue paying and booking a ticket in events, workshops or bundles.</p>
+                                                </div>
+                                                <Link href={`/${user._id}/profile`} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
+                                            </div>
+                                    }
+                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob logo" />
                                 </div>
                             </div>
                         </motion.div>
@@ -277,13 +290,13 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                     apartment: "",
                     first_name: user?.first_name,
                     last_name: user?.last_name,
-                    street: "",
+                    street: user?.address || "",
                     building: "",
-                    phone_number: user?.phone_number || "N/A",
-                    country: "Egypt",
+                    phone_number: user?.phone_number,
+                    country: user?.country || 'Egypt',
                     email: user?.email,
                     floor: "",
-                    state: ""
+                    state: user?.city || ""
                 },
                 customer: {
                     id: user?._id,
@@ -399,24 +412,36 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                     </div>
                                 </div>
                                 <div className="mt-auto">
-                                    <button
-                                        className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={() => handlePayment('workshop', paymentTab)}
-                                        disabled={loading}
-                                    >
-                                        {loading ? (
-                                            <>
-                                                <span>Processing...</span>
-                                                <Icon icon="iconamoon:synchronize-fill" className="animate-spin" fontSize={22} />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>Proceed to payment</span>
-                                                <Icon icon="material-symbols:check-rounded" fontSize={22} />
-                                            </>
-                                        )}
-                                    </button>
-                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob" />
+                                    {
+                                        user.phone_number !== ''
+                                            ?
+                                            <button
+                                                className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
+                                                onClick={() => handlePayment('workshop', paymentTab)}
+                                                disabled={loading}
+                                            >
+                                                {loading ? (
+                                                    <>
+                                                        <span>Processing...</span>
+                                                        <Icon icon="iconamoon:synchronize-fill" className="animate-spin" fontSize={22} />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span>Proceed to payment</span>
+                                                        <Icon icon="material-symbols:check-rounded" fontSize={22} />
+                                                    </>
+                                                )}
+                                            </button>
+                                            :
+                                            <div className='p-2 px-3 mb-3 rounded-xl border border-yellow-600 text-yellow-600'>
+                                                <div className=' flex text-sm items-start gap-2'>
+                                                    <Icon icon='fluent:warning-24-filled' className='mt-1' fontSize={20}></Icon>
+                                                    <p className='flex-1'>You must complete your profile information first to continue paying and booking a ticket in events, workshops or bundles.</p>
+                                                </div>
+                                                <Link href={`/${user._id}/profile`} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
+                                            </div>
+                                    }
+                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob logo" />
                                 </div>
                             </div>
                         </motion.div>
@@ -455,13 +480,13 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                     apartment: "",
                     first_name: user?.first_name,
                     last_name: user?.last_name,
-                    street: "",
+                    street: user?.address || "",
                     building: "",
-                    phone_number: user?.phone_number || "N/A",
-                    country: "Egypt",
+                    phone_number: user?.phone_number,
+                    country: user?.country || 'Egypt',
                     email: user?.email,
                     floor: "",
-                    state: ""
+                    state: user?.city || ""
                 },
                 customer: {
                     id: user?._id,
@@ -559,24 +584,36 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                     </div>
                                 </div>
                                 <div className="mt-auto">
-                                    <button
-                                        className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
-                                        onClick={() => handlePayment('bundle', paymentTab)}
-                                        disabled={loading}
-                                    >
-                                        {loading ? (
-                                            <>
-                                                <span>Processing...</span>
-                                                <Icon icon="iconamoon:synchronize-fill" className="animate-spin" fontSize={22} />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>Proceed to payment</span>
-                                                <Icon icon="material-symbols:check-rounded" fontSize={22} />
-                                            </>
-                                        )}
-                                    </button>
-                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob" />
+                                    {
+                                        user.phone_number !== ''
+                                            ?
+                                            <button
+                                                className="main-btn mb-3 w-full font-bold flex items-center gap-1 justify-center disabled:opacity-50 disabled:hover:bg-sky-500"
+                                                onClick={() => handlePayment('bundle', paymentTab)}
+                                                disabled={loading}
+                                            >
+                                                {loading ? (
+                                                    <>
+                                                        <span>Processing...</span>
+                                                        <Icon icon="iconamoon:synchronize-fill" className="animate-spin" fontSize={22} />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span>Proceed to payment</span>
+                                                        <Icon icon="material-symbols:check-rounded" fontSize={22} />
+                                                    </>
+                                                )}
+                                            </button>
+                                            :
+                                            <div className='p-2 px-3 mb-3 rounded-xl border border-yellow-600 text-yellow-600'>
+                                                <div className=' flex text-sm items-start gap-2'>
+                                                    <Icon icon='fluent:warning-24-filled' className='mt-1' fontSize={20}></Icon>
+                                                    <p className='flex-1'>You must complete your profile information first to continue paying and booking a ticket in events, workshops or bundles.</p>
+                                                </div>
+                                                <Link href={`/${user._id}/profile`} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
+                                            </div>
+                                    }
+                                    <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob logo" />
                                 </div>
                             </div>
                         </motion.div>

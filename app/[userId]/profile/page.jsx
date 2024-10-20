@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import UserAvatar from '../../components/UserAvatar'
 import { updateUser } from '../../store/slices/usersSlice'
 import Loader from '../../components/Loader'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 function Profile() {
     const dispatch = useDispatch()
-    const {user, loading} = useSelector(state => state.users)
+    const { user, loading } = useSelector(state => state.users)
     const [tempUser, setTempUser] = useState({ ...user })
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -18,9 +20,9 @@ function Profile() {
         e.preventDefault()
         dispatch(updateUser({ id: user._id, userData: tempUser }))
     }
-    
+
     useEffect(() => {
-        setTempUser({...user})
+        setTempUser({ ...user })
     }, [user])
 
     return (
@@ -54,7 +56,43 @@ function Profile() {
                     </label>
                     <label className='w-full'>
                         <span className='mb-1 block'>Phone number</span>
-                        <input type="text" name='phone_number' placeholder='e.g. +2001011308220' value={tempUser.phone_number} onChange={handleChange} />
+                        {/* <input type="tel" name='phone_number' placeholder='e.g. +2001011308220' value={tempUser.phone_number} onChange={handleChange} /> */}
+                        <PhoneInput
+                            placeholder="e.g. 01011308220"
+                            name="city"
+                            international
+                            defaultCountry="EG"
+                            value={tempUser.phone_number}
+                            onChange={(value) => setTempUser({ ...tempUser, phone_number: value })}
+                        />
+                    </label>
+                </div>
+                <div className='flex items-center gap-3 w-full max-md:flex-col'>
+                    <label className='w-full'>
+                        <span className='mb-1 block'>Education</span>
+                        <input type="text" name='education' placeholder='e.g. Faculty of dentistry' value={tempUser.education} onChange={handleChange} />
+                    </label>
+                    <label className='w-full'>
+                        <span className='mb-1 block'>School</span>
+                        <input type="text" name='school' placeholder='e.g. Zagazig university' value={tempUser.school} onChange={handleChange} />
+                    </label>
+                </div>
+                <label className='w-full'>
+                    <span className='mb-1 block'>Address</span>
+                    <input type="text" name='address' placeholder='Enter your address line' value={tempUser.address} onChange={handleChange} />
+                </label>
+                <div className='flex items-center gap-3 w-full max-md:flex-col'>
+                    <label className='w-full'>
+                        <span className='mb-1 block'>Country</span>
+                        <input type="text" name='country' placeholder='e.g. Egypt' value={tempUser.country} onChange={handleChange} />
+                    </label>
+                    <label className='w-full'>
+                        <span className='mb-1 block'>City</span>
+                        <input type="text" name='city' placeholder='e.g. Zagazig' value={tempUser.city} onChange={handleChange} />
+                    </label>
+                    <label className='md:w-1/2 w-full'>
+                        <span className='mb-1 block'>Zip code</span>
+                        <input type="text" name='zip_code' placeholder='e.g. 44511' value={tempUser.zip_code} onChange={handleChange} />
                     </label>
                 </div>
                 <button className='mt-5 main-btn w-fit ms-auto'>Save changes</button>

@@ -13,7 +13,7 @@ function Footer() {
             transition={{ ease: "easeOut" }}
         >
             <footer className="py-12 bg-neutral-900 text-neutral-300">
-                <div className="container">
+                <div className="container px-4">
                     <div className="grid lg:grid-cols-3 md:grid-col-2 grid-col-1 gap-10 max-lg:justify-center max-lg:text-center">
                         <div className="left flex flex-col gap-8 max-lg:items-center">
                             <div className="logo">

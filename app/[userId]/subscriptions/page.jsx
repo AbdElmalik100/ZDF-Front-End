@@ -105,7 +105,7 @@ function Subsciriptions() {
                                 </div>
                             )
                             :
-                            <div className='grid place-items-center py-12'>
+                            <div className='grid place-items-center py-12 min-h-[400px]'>
                                 <h3 className='text-neutral-500'>Nothing to show</h3>
                             </div>
                     }

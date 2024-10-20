@@ -186,7 +186,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="payment-method mt-5">
+                                <div className="payment-method mt-5 mb-12">
                                     <h3 className="font-bold">Choose your payment method</h3>
                                     <div className="tabs flex items-start gap-2 mt-3 flex-col">
                                         <div onClick={() => setPaymentTab("card")}

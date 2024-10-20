@@ -46,21 +46,30 @@ function Payment() {
                     {
                         isSuccess
                             ?
-                            <div className='success-box rounded-3xl border shadow-md bg-white p-8 w-[725px]'>
+                            <div className='success-box rounded-3xl border shadow-md bg-white md:p-8 px-4 py-8 md:w-[725px] w-full'>
                                 <Icon icon='line-md:confirm-circle-filled' className='mb-4 mx-auto text-green-600' fontSize={150} />
                                 <h3 className='text-green-600 font-bold text-2xl uppercase mb-3'>Payment success</h3>
-                                <p className='text-neutral-500 w-5/6 mx-auto text-xl'>Thank you for your time on ZDF, Your booking operation has been recorded successfully to our databases.</p>
-                                <Link href='/' className='main-btn block w-fit font-bold px-5 mx-auto mt-5'>Back home</Link>
+                                <p className='text-neutral-500 md:w-5/6 w-full mx-auto md:text-xl text-base'>Thank you for your time on ZDF, Your booking operation has been recorded successfully to our databases.</p>
+                                <Link href='/' className='main-btn w-fit font-bold mx-auto mt-8 flex items-center gap-2'>
+                                    <Icon icon='solar:home-2-bold' fontSize={20} />
+                                    <span>Back home</span>
+                                </Link>
                                 <Image src={ZDFLogo} width={150} height={150} className='mx-auto mt-16' alt='ZDF Logo' />
                             </div>
                             :
-                            <div className='success-box rounded-3xl border shadow-md bg-white p-8 w-[725px]'>
+                            <div className='success-box rounded-3xl border shadow-md bg-white px-4 py-8 md:w-[725px] w-full'>
                                 <Icon icon='line-md:close-circle-filled' className='mb-4 mx-auto text-rose-600' fontSize={150} />
                                 <h3 className='text-rose-600 font-bold text-2xl uppercase mb-3'>Payment failed</h3>
-                                <p className='text-neutral-500 mx-auto text-xl'>Thank you for your time on ZDF, Unfortunately your booking operation has failed. There might be something wrong with your payment method. Try contacting your payment service provider, or just contact us.</p>
-                                <div className='mt-5 flex items-center justify-center gap-3'>
-                                    <Link href='/' className='main-btn font-bold px-5'>Back home</Link>
-                                    <a href="https://wa.me/+2001011308220" target='_blank' className='alt-btn font-bold px-5'>Contact us</a>
+                                <p className='text-neutral-500 mx-auto md:text-xl text-base'>Thank you for your time on ZDF, Unfortunately your booking operation has failed. There might be something wrong with your payment method. Try contacting your payment service provider, or just contact us.</p>
+                                <div className='mt-8 flex items-center justify-center gap-3'>
+                                    <Link href='/' className='main-btn font-bold w-fit flex items-center gap-2'>
+                                        <Icon icon='solar:home-2-bold' fontSize={20} />
+                                        <span>Back home</span>
+                                    </Link>
+                                    <a href="https://wa.me/+2001011308220" target='_blank' className='alt-btn font-bold flex items-center gap-2'>
+                                        <Icon icon='mage:whatsapp-filled' fontSize={20} />
+                                        <span>Contact us</span>
+                                    </a>
                                 </div>
                                 <Image src={ZDFLogo} width={150} height={150} className='mx-auto mt-16' alt='ZDF Logo' />
                             </div>

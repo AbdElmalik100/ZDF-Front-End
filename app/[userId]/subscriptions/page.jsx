@@ -48,7 +48,7 @@ function Subsciriptions() {
             ?
             <Loader></Loader>
             :
-            <div className='content p-4 bg-white shadow-md rounded-lg w-full min-h-[400px]'>
+            <div className='content p-4 bg-white shadow-md rounded-lg w-full min-h-[400px] flex flex-col'>
                 <h2 className='font-bold text-2xl'>Subscriptions history</h2>
                 <div className='filters mt-5 flex items-center gap-2 flex-wrap'>
                     {
@@ -105,8 +105,8 @@ function Subsciriptions() {
                                 </div>
                             )
                             :
-                            <div className='grid place-items-center py-12'>
-                                <h3 className='text-neutral-500'>Nothing to show</h3>
+                            <div className='grid place-items-center py-12 h-full'>
+                                <h3 className='text-neutral-500 h-full'>Nothing to show</h3>
                             </div>
                     }
                 </div>

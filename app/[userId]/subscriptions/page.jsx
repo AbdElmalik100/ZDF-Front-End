@@ -57,7 +57,7 @@ function Subsciriptions() {
                         ))
                     }
                 </div>
-                <div className='mt-8 flex flex-col gap-3 w-full'>
+                <div className='mt-8 flex flex-col gap-3 w-full h-full'>
                     {
                         filteredData.length > 0
                             ?
@@ -106,7 +106,7 @@ function Subsciriptions() {
                             )
                             :
                             <div className='grid place-items-center py-12 h-full'>
-                                <h3 className='text-neutral-500 h-full'>Nothing to show</h3>
+                                <h3 className='text-neutral-500'>Nothing to show</h3>
                             </div>
                     }
                 </div>

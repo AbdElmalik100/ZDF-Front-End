@@ -56,7 +56,6 @@ function Profile() {
                     </label>
                     <label className='w-full'>
                         <span className='mb-1 block'>Phone number</span>
-                        {/* <input type="tel" name='phone_number' placeholder='e.g. +2001011308220' value={tempUser.phone_number} onChange={handleChange} /> */}
                         <PhoneInput
                             placeholder="e.g. 01011308220"
                             name="city"

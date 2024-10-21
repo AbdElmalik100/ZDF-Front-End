@@ -29,7 +29,7 @@ function UserLayout({ children }) {
     }
 
     useEffect(() => {
-        progressBar.current.style.width = `${userProfilePercentage()}%`
+        if (user) progressBar.current.style.width = `${userProfilePercentage()}%`
     }, [user, progressBar])
     
     return (

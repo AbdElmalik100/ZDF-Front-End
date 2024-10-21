@@ -247,7 +247,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                                     <Icon icon='fluent:warning-24-filled' className='mt-1' fontSize={20}></Icon>
                                                     <p className='flex-1'>You must complete your profile information first to continue paying and booking a ticket in events, workshops or bundles.</p>
                                                 </div>
-                                                <Link href={`/${user._id}/profile`} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
+                                                <Link href={`/${user._id}/profile`} onClick={() => setCheckout(false)} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
                                             </div>
                                     }
                                     <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob logo" />
@@ -438,7 +438,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                                     <Icon icon='fluent:warning-24-filled' className='mt-1' fontSize={20}></Icon>
                                                     <p className='flex-1'>You must complete your profile information first to continue paying and booking a ticket in events, workshops or bundles.</p>
                                                 </div>
-                                                <Link href={`/${user._id}/profile`} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
+                                                <Link href={`/${user._id}/profile`} onClick={() => setCheckout(false)} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
                                             </div>
                                     }
                                     <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob logo" />
@@ -610,7 +610,7 @@ function CheckoutMenu({ checkout, setCheckout, type, workshop, bundle }) {
                                                     <Icon icon='fluent:warning-24-filled' className='mt-1' fontSize={20}></Icon>
                                                     <p className='flex-1'>You must complete your profile information first to continue paying and booking a ticket in events, workshops or bundles.</p>
                                                 </div>
-                                                <Link href={`/${user._id}/profile`} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
+                                                <Link href={`/${user._id}/profile`} onClick={() => setCheckout(false)} className="main-btn mt-3 block text-center font-bold mb-3">Complete your profile</Link>
                                             </div>
                                     }
                                     <img src="/images/paymob.png" className="w-24 mx-auto" alt="Paymob logo" />

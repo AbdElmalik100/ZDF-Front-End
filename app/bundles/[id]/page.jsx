@@ -2,7 +2,7 @@
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBundle } from '../../store/slices/bundlesSlice'
+import { getBundle, updateBundle } from '../../store/slices/bundlesSlice'
 import Loader from '../../components/Loader'
 import CheckoutMenu from '../../components/CheckoutMenu'
 import { formatCurrency } from '../../lib/utils'
@@ -13,22 +13,37 @@ import moment from 'moment'
 function BundleDetails() {
     const dispatch = useDispatch()
     const params = useParams()
+    const router = useRouter()
     const { bundle } = useSelector(state => state.bundles)
     const { isLoggedIn } = useSelector(state => state.users)
     const { subscriptions } = useSelector(state => state.subscriptions)
     const [checkout, setCheckout] = useState(false)
     const [isBooked, setIsBooked] = useState(false)
+    const [isLimitExceeded, setIsLimitExceeded] = useState(false)
 
-    const router = useRouter()
 
     const booking = () => {
         isLoggedIn ? setCheckout(true) : router.push('/login')
+    }
+
+    const checkLimitation = async () => {
+        await axios.get("api/subscriptions")
+            .then(response => {
+                const subscriptions = response.data.filter(sub => sub.bundle?._id === bundle._id)
+                if (subscriptions.length == bundle.limit) {
+                    setIsLimitExceeded(true)
+                    dispatch(updateBundle({ ...bundle, is_available: false }))
+                }
+            }).catch(error => {
+                console.log(error);
+            })
     }
 
     useEffect(() => {
         if (isLoggedIn && bundle) {
             const checker = subscriptions.filter(sub => sub.bundle?._id === bundle._id)[0]
             checker ? setIsBooked(true) : setIsBooked(false)
+            checkLimitation()
         } else setIsBooked(false)
     }, [subscriptions, bundle, isLoggedIn])
 
@@ -51,7 +66,7 @@ function BundleDetails() {
                             <img src="/images/star-medal.png" className='w-24 absolute -top-8 -rotate-12 -right-8 z-20' alt="Bundle badge" />
                             <img className='rounded-3xl' src={bundle.image} alt="Bundle image" />
                             {
-                                !bundle.is_available &&
+                                (!bundle.is_available || isLimitExceeded) &&
                                 <span className="badge text-center absolute top-3 left-3 bg-red-700">Soldout</span>
                             }
                         </motion.div>
@@ -88,7 +103,7 @@ function BundleDetails() {
                                         <Icon icon="icon-park-solid:check-one" fontSize={20} />
                                     </div>
                                     :
-                                    <button onClick={booking} className="main-btn md:w-fit w-full px-8 text-center mt-12 disabled:opacity-50 disabled:pointer-events-none font-bold" disabled={!bundle.is_available}>Book now for {formatCurrency.format(bundle.price)}</button>
+                                    <button onClick={booking} className="main-btn md:w-fit w-full px-8 text-center mt-12 disabled:opacity-50 disabled:pointer-events-none font-bold" disabled={!bundle.is_available || isLimitExceeded}>Book now for {formatCurrency.format(bundle.price)}</button>
                             }
                         </motion.div>
                         <CheckoutMenu type="bundle" checkout={checkout} setCheckout={setCheckout} bundle={bundle}></CheckoutMenu>

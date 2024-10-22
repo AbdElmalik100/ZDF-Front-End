@@ -20,7 +20,14 @@ export const getBundle = createAsyncThunk("bundlesSlice/getBundle", async (bundl
     }
 })
 
-
+export const updateBundle = createAsyncThunk("workshopsSlice/updateBundle", async (bundleData) => {
+    try {
+        const response = await axios.patch(`api/bundles/${bundleData._id}`, bundleData)
+        return response.data
+    } catch (error) {
+        return error.response.data
+    }
+})
 
 const bundlesSlice = createSlice({
     name: "bundles",
@@ -52,6 +59,19 @@ const bundlesSlice = createSlice({
                 state.bundle = action.payload
             })
             .addCase(getBundle.rejected, (state, action) => {
+                state.loading = false
+            })
+        
+        builder
+            .addCase(updateBundle.pending, state => {
+                state.loading = true
+            })
+            .addCase(updateBundle.fulfilled, (state, action) => {
+                state.loading = false
+                if (state.bundle && state.bundle._id === action.payload._id) state.bundle = action.payload
+                state.bundles = state.bundles.map((bundle => bundle._id === action.payload._id ? action.payload : bundle)) 
+            })
+            .addCase(updateBundle.rejected, (state, action) => {
                 state.loading = false
             })
     }

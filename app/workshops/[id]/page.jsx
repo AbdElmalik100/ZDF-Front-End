@@ -2,7 +2,7 @@
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getWorkshop } from '../../store/slices/workshopsSlice'
+import { getWorkshop, updateWorkshop } from '../../store/slices/workshopsSlice'
 import Loader from '../../components/Loader'
 import NewBadge from '../../components/NewBadge'
 import { Icon } from '@iconify/react'
@@ -10,35 +10,50 @@ import moment from 'moment'
 import { formatCurrency } from '../../lib/utils'
 import { motion } from 'framer-motion'
 import CheckoutMenu from '../../components/CheckoutMenu'
+import axios from 'axios'
 
 
 function WorkshopDetails() {
     const params = useParams()
     const dispatch = useDispatch()
+    const router = useRouter()
     const { workshop } = useSelector(state => state.workshops)
     const { isLoggedIn } = useSelector(state => state.users)
     const { subscriptions } = useSelector(state => state.subscriptions)
     const [checkout, setCheckout] = useState(false)
     const [isBooked, setIsBooked] = useState(false)
-    const router = useRouter()
+    const [isLimitExceeded, setIsLimitExceeded] = useState(false)
 
     const booking = () => {
         isLoggedIn ? setCheckout(true) : router.push('/login')
     }
 
+    const checkLimitation = async () => {
+        await axios.get("api/subscriptions")
+            .then(response => {
+                const subscriptions = response.data.filter(sub => sub.workshop?._id === workshop._id)
+                if (subscriptions.length == workshop.limit) {
+                    setIsLimitExceeded(true)
+                    dispatch(updateWorkshop({ ...workshop, is_available: false }))
+                }
+            }).catch(error => {
+                console.log(error);
+            })
+    }
 
     useEffect(() => {
         if (isLoggedIn && workshop) {
             const checker = subscriptions.filter(sub => sub.workshop?._id === workshop._id)[0]
             checker ? setIsBooked(true) : setIsBooked(false)
+            checkLimitation()
         } else setIsBooked(false)
     }, [subscriptions, workshop, isLoggedIn])
 
     useEffect(() => {
         dispatch(getWorkshop(params.id))
     }, [dispatch, params])
-    return (
 
+    return (
         <div className='workshop-details min-h-screen py-32'>
             {
                 !workshop
@@ -55,7 +70,7 @@ function WorkshopDetails() {
                             <NewBadge workshop={workshop}></NewBadge>
                             <div className="absolute top-3 left-3 flex flex-col gap-2">
                                 {
-                                    !workshop.is_available &&
+                                    (!workshop.is_available || isLimitExceeded) &&
                                     <span className="badge text-center relative top-0 left-0 bg-red-700">Soldout</span>
                                 }
                                 {
@@ -110,7 +125,7 @@ function WorkshopDetails() {
                                         <Icon icon="icon-park-solid:check-one" fontSize={20} />
                                     </div>
                                     :
-                                    <button onClick={booking} className="main-btn md:w-fit w-full px-8 text-center mt-12 disabled:opacity-50 disabled:pointer-events-none font-bold" disabled={!workshop.is_available}>Book now for {formatCurrency.format(workshop.price - ((workshop.price * workshop.discount) / 100))}</button>
+                                    <button onClick={booking} className="main-btn md:w-fit w-full px-8 text-center mt-12 disabled:opacity-50 disabled:pointer-events-none font-bold" disabled={!workshop.is_available || isLimitExceeded}>Book now for {formatCurrency.format(workshop.price - ((workshop.price * workshop.discount) / 100))}</button>
                             }
                         </motion.div>
                         <CheckoutMenu type="workshop" checkout={checkout} setCheckout={setCheckout} workshop={workshop}></CheckoutMenu>

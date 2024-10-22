@@ -20,6 +20,15 @@ export const getWorkshop = createAsyncThunk("workshopsSlice/getWorkshop", async 
     }
 })
 
+export const updateWorkshop = createAsyncThunk("workshopsSlice/updateWorkshop", async (workshopData) => {
+    try {
+        const response = await axios.patch(`api/workshops/${workshopData._id}`, workshopData)
+        return response.data
+    } catch (error) {
+        return error.response.data
+    }
+})
+
 
 const workshopsSlice = createSlice({
     name: "workshop",
@@ -51,6 +60,19 @@ const workshopsSlice = createSlice({
                 state.workshop = action.payload
             })
             .addCase(getWorkshop.rejected, (state, action) => {
+                state.loading = false
+            })
+        
+        builder
+            .addCase(updateWorkshop.pending, state => {
+                state.loading = true
+            })
+            .addCase(updateWorkshop.fulfilled, (state, action) => {
+                state.loading = false
+                if (state.workshop && state.workshop._id === action.payload._id) state.workshop = action.payload
+                state.workshops = state.workshops.map((workshop => workshop._id === action.payload._id ? action.payload : workshop)) 
+            })
+            .addCase(updateWorkshop.rejected, (state, action) => {
                 state.loading = false
             })
     }
